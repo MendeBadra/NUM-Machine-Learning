@@ -51,7 +51,7 @@ Title: {listing_details.get("title", "N/A")}
 Price: {listing_details.get("price", "N/A")}
 Location: {listing_details.get("location", "N/A")}
 Area: {listing_details.get("area", "N/A sqm")}
-Bedrooms: {listing_details.get("bedrooms", "N/A")}
+Rooms: {listing_details.get("bedrooms", "N/A")}
 Description: {listing_details.get("description", "N/A")}
 
 Market Context:
