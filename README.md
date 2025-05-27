@@ -88,3 +88,64 @@ The current location value is incorrectly pulled from a nearby description tag i
   * If explicit address not found, look for district or khoroo names in breadcrumbs or tags.
 * [ ] Write a helper function `extract_detail_by_label(soup, label)` to reuse for similar fields like area, floor, etc.
 * [ ] Add a test case for listings that only include a vague or no location.
+
+
+
+## 🚀 Getting Started
+
+Follow these steps to set up and run the project locally.
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/yourusername/langchain-app.git
+cd langchain-app
+```
+
+### 2. Set Up a Virtual Environment
+
+Python 3.10 or newer is required.
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate  # On Windows use: .venv\Scripts\activate
+```
+
+### 3. Install Dependencies
+
+If you're using [**uv**](https://github.com/astral-sh/uv):
+
+```bash
+uv pip install -r requirements.txt
+```
+
+Otherwise, install directly from `pyproject.toml`:
+
+```bash
+pip install .
+```
+
+Or install using editable mode for development:
+
+```bash
+pip install -e .
+```
+
+> ✅ Make sure `pip` is the one from your virtual environment.
+
+### 4. Set Up Environment Variables
+
+Create a `.env` file in the root directory and add your API keys:
+
+```
+OPENAI_API_KEY=your_openai_key
+TOGETHER_API_KEY=your_together_api_key
+```
+
+### 5. Run the App
+
+```bash
+python main.py
+```
+
+You’ll be prompted to enter a real estate listing URL or a general query.
