@@ -1,0 +1,46 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.so
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Virtual environment
+.venv/
+.env/
+.env.*
+
+# VS Code settings
+.vscode/
+
+# Python build artifacts
+build/
+dist/
+*.egg-info/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+
+# Pytest cache
+.pytest_cache/
+
+# MyPy cache
+.mypy_cache/
+
+# Data folders
+data/
+real_estate_assistant/data/
+
+# Local vector index
+vectorstore/
+real_estate_assistant/vectorstore/
+
+# Ignore PDFs if auto-generated
+*.pdf

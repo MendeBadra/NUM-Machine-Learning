@@ -1,0 +1,30 @@
+[project]
+name = "langchain-app"
+version = "0.1.0"
+description = "A LangChain-based AI project"
+authors = ["Mende mendamar345@gmail.com"]
+readme = "README.md"
+requires-python = ">=3.10"
+
+dependencies = [
+  "langchain",
+  "openai",
+  "chromadb",
+  "tiktoken",
+  "python-dotenv",
+  "requests",
+  "pydantic",
+  "rich",
+  "beautifulsoup4",
+  "lxml",
+  "together"
+]
+
+[tool.uv]  # Optional, just marks uv usage
+# compile = true
+
+[tool.ruff]
+line-length = 100
+exclude = ["venv", "__pycache__"]
+target-version = "py311"
+select = ["E", "F", "I"]  # E = pycodestyle, F = pyflakes, I = isort
