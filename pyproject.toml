@@ -2,7 +2,6 @@
 name = "langchain-app"
 version = "0.1.0"
 description = "A LangChain-based AI project"
-authors = ["Mende mendamar345@gmail.com"]
 readme = "README.md"
 requires-python = ">=3.10"
 
@@ -17,7 +16,8 @@ dependencies = [
   "rich",
   "beautifulsoup4",
   "lxml",
-  "together"
+  "together",
+  "langchain-together>=0.3.0"
 ]
 
 [tool.uv]  # Optional, just marks uv usage

@@ -1,5 +1,9 @@
 from real_estate_assistant.agents.retriever import RetrieverAgent
 from real_estate_assistant.agents.writer import WriterAgent
+from dotenv import load_dotenv
+load_dotenv()
+
+
 
 def main():
     print("Welcome to the Real Estate Assistant!")
