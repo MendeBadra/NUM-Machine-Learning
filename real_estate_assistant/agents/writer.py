@@ -1,7 +1,8 @@
 import os
+
 import pandas as pd
+from .build_index import build_vector_store
 from langchain_together import ChatTogether
-from build_index import build_vector_store
 
 
 class WriterAgent:

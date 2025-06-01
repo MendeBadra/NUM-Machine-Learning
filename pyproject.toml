@@ -17,7 +17,10 @@ dependencies = [
   "beautifulsoup4",
   "lxml",
   "together",
-  "langchain-together>=0.3.0"
+  "langchain-together>=0.3.0",
+  "pandas>=2.2.3",
+  "faiss-cpu>=1.11.0",
+  "pdfplumber>=0.11.6",
 ]
 
 [tool.uv]  # Optional, just marks uv usage

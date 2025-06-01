@@ -1,7 +1,8 @@
+import pickle
+
 import faiss
 import numpy as np
-import pickle
-from retriever import RetrieverAgent
+from .retriever import RetrieverAgent
 
 
 def dummy_embedder(text):
@@ -11,7 +12,11 @@ def dummy_embedder(text):
     vec = np.frombuffer(hash_bytes, dtype=np.uint8).astype(np.float32)
     return vec / 255.0  # normalize to [0,1]
 
-def build_vector_store(listing_urls, output_index="vector_store.index", output_data="vector_data.pkl"):
+def build_vector_store(
+    listing_urls,
+    output_index="vector_store.index",
+    output_data="vector_data.pkl"
+):
     retriever = RetrieverAgent()
     print("Extracting listings...")
     listings = []

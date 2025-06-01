@@ -1,9 +1,11 @@
-import requests
 import io
-import pdfplumber
-import pandas as pd
 import re
+
+import pandas as pd
+import pdfplumber
+import requests
 from bs4 import BeautifulSoup
+
 
 class RetrieverAgent:
     def __init__(self):

@@ -1,7 +1,8 @@
+from dotenv import load_dotenv
+
+from real_estate_assistant.agents.build_index import build_vector_store
 from real_estate_assistant.agents.retriever import RetrieverAgent
 from real_estate_assistant.agents.writer import WriterAgent, extract_market_context
-from real_estate_assistant.agents.build_index import build_vector_store
-from dotenv import load_dotenv
 
 load_dotenv()
 
