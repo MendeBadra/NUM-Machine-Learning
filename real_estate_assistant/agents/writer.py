@@ -3,6 +3,7 @@ import os
 import pandas as pd
 from .build_index import build_vector_store
 from langchain_together import ChatTogether
+from ..generate_pdf import create_pdf_report
 
 
 class WriterAgent:
@@ -119,6 +120,120 @@ Only return the translated text. Do not include explanations or extra formatting
             print(f"WriterAgent: Translation failed: {e}")
             return f"Error: Could not translate to Mongolian. Details: {e}"
 
+    def generate_pdf_report(self, listing_details: dict, market_context: dict = None, translate=False) -> str:
+        """
+        Generates a structured PDF report with title/price header, market analysis, and conclusion.
+        """
+        print("WriterAgent: Generating structured PDF report...")
+
+        if not listing_details:
+            return "Error: No listing details provided to generate report."
+
+        if market_context is None:
+            market_context = {
+                "listings_analyzed": 0,
+                "average_price": "N/A",
+                "key_insights": ["No market data available."]
+            }
+
+        # Generate structured content for PDF
+        report_data = self._generate_structured_content(listing_details, market_context, translate)
+        
+        # Create PDF using the generate_pdf module
+        pdf_filename = f"real_estate_report_{listing_details.get('title', 'unknown').replace(' ', '_')[:30]}.pdf"
+        pdf_path = create_pdf_report(report_data, pdf_filename)
+        
+        return pdf_path
+
+    def _generate_structured_content(self, listing_details: dict, market_context: dict, translate=False) -> dict:
+        """
+        Generates structured content for PDF report with separate sections.
+        """
+        # Extract key information for header
+        title = listing_details.get("title", "N/A")
+        price = listing_details.get("price", "N/A")
+        area = listing_details.get("area", "N/A")
+        location = listing_details.get("location", "N/A")
+
+        # Generate market analysis section
+        market_analysis = self._generate_market_analysis(listing_details, market_context, translate)
+        
+        # Generate conclusion and recommendation
+        conclusion = self._generate_conclusion(listing_details, market_context, translate)
+
+        report_data = {
+            "title": title,
+            "price": price,
+            "area": area,
+            "location": location,
+            "market_analysis": market_analysis,
+            "conclusion": conclusion,
+            "url": listing_details.get("url", "N/A"),
+            "market_data_df": market_context.get("market_data_df", None)  # Include market data DataFrame
+        }
+
+        return report_data
+
+    def _generate_market_analysis(self, listing_details: dict, market_context: dict, translate=False) -> str:
+        """
+        Generates the market analysis section of the report.
+        """
+        prompt = f"""
+You are a professional real estate analyst. Generate a detailed market analysis section for the following apartment listing.
+
+Focus on:
+1. Price comparison with market averages
+2. Location analysis and district comparison
+3. Property features and their market value
+4. Market trends and insights
+
+**Apartment Details:**
+Price: {listing_details.get("price", "N/A")}
+Area: {listing_details.get("area", "N/A")}
+Location: {listing_details.get("location", "N/A")}
+Description: {listing_details.get("description", "N/A")}
+
+**Market Context:**
+Average Price: {market_context.get("average_price", "N/A")}
+Market Insights: {chr(10).join(market_context.get("key_insights", ["N/A"]))}
+
+Provide a comprehensive market analysis in {"Mongolian" if translate else "English"}.
+"""
+
+        try:
+            response = self.llm.invoke(prompt, max_tokens=800, temperature=0.2)
+            return response.content.strip()
+        except Exception as e:
+            return f"Error generating market analysis: {e}"
+
+    def _generate_conclusion(self, listing_details: dict, market_context: dict, translate=False) -> str:
+        """
+        Generates the conclusion and recommendation section.
+        """
+        prompt = f"""
+You are a professional real estate analyst. Based on the market analysis, provide a clear conclusion and recommendation for this apartment listing.
+
+Include:
+1. Overall assessment (Good deal, Average deal, or Overpriced)
+2. Key reasons supporting your recommendation
+3. Potential risks or considerations
+4. Final recommendation for the buyer
+
+**Property Summary:**
+Price: {listing_details.get("price", "N/A")}
+Area: {listing_details.get("area", "N/A")}
+Market Average: {market_context.get("average_price", "N/A")}
+
+Provide a clear conclusion and recommendation in {"Mongolian" if translate else "English"}.
+Format your response with clear headings and bullet points where appropriate.
+"""
+
+        try:
+            response = self.llm.invoke(prompt, max_tokens=600, temperature=0.2)
+            return response.content.strip()
+        except Exception as e:
+            return f"Error generating conclusion: {e}"
+
 
 def extract_market_context(market_data):
     """
@@ -127,7 +242,8 @@ def extract_market_context(market_data):
     context = {
         "listings_analyzed": 0,
         "average_price": "N/A",
-        "key_insights": []
+        "key_insights": [],
+        "market_data_df": None
     }
 
     combined_df = pd.DataFrame()
@@ -153,6 +269,7 @@ def extract_market_context(market_data):
         avg_price = combined_df["2025 Mar"].mean()
         context["listings_analyzed"] = len(combined_df)
         context["average_price"] = f"MNT {avg_price:,.0f}M"
+        context["market_data_df"] = combined_df  # Add DataFrame to context
 
         top = combined_df.sort_values("2025 Mar", ascending=False).head(3)
         insights = [

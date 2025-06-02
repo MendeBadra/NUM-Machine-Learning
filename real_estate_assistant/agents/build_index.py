@@ -2,6 +2,7 @@ import pickle
 
 import faiss
 import numpy as np
+
 from .retriever import RetrieverAgent
 
 

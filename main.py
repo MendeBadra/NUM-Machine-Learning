@@ -34,12 +34,12 @@ def main():
         _, market_data = build_vector_store([query])
         market_context = extract_market_context(market_data)
 
-        # Generate report (with translation option)
+        # Generate PDF report (with translation option)
         translate = input("\n🌐 Do you want the report in Mongolian? (y/n):\n> ").lower().startswith("y")
-        report = writer.generate_report(listing_details, market_context, translate=translate)
-
+        pdf_path = writer.generate_pdf_report(listing_details, market_context, translate=translate)
+        
         print("\n✅ --- Analysis Completed ---")
-        print(report)
+        print(f"📄 PDF report saved to: {pdf_path}")
 
     elif query_type == "q2":
         # --- Workflow 2: General Search + Selection ---
@@ -80,12 +80,12 @@ def main():
         _, market_data = build_vector_store([selected_listing["url"]])
         market_context = extract_market_context(market_data)
 
-        # Generate report (with optional translation)
+        # Generate PDF report (with optional translation)
         translate = input("\n🌐 Do you want the report in Mongolian? (y/n):\n> ").lower().startswith("y")
-        report = writer.generate_report(listing_details, market_context, translate=translate)
+        pdf_path = writer.generate_pdf_report(listing_details, market_context, translate=translate)
 
         print("\n✅ --- Analysis Completed ---")
-        print(report)
+        print(f"📄 PDF report saved to: {pdf_path}")
 
     else:
         print("⚠️ Unknown query type. Please try again.")
